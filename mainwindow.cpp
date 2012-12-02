@@ -22,8 +22,6 @@ void MainWindow::on_OpenAction_triggered()
         QImage image(fileName);
         if (!image.isNull()){
             QScrollArea* area = new QScrollArea(ui->tabWidget);
-            area->horizontalScrollBar()->setValue(10);
-            area->verticalScrollBar()->setValue(10);
             QLabel* label = new QLabel(area);
             label->setPixmap(QPixmap::fromImage(image));
             area->setWidget(label);
