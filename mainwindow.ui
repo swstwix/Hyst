@@ -50,9 +50,17 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="ZoomInAction"/>
+   <addaction name="ZoomOutAction"/>
+   <addaction name="separator"/>
+   <addaction name="OpenAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="OpenAction">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/new/prefix1/open.png</normaloff>:/new/prefix1/open.png</iconset>
+   </property>
    <property name="text">
     <string>Открыть</string>
    </property>
@@ -63,18 +71,28 @@
    </property>
   </action>
   <action name="ZoomInAction">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/new/prefix1/zoomIn.png</normaloff>:/new/prefix1/zoomIn.png</iconset>
+   </property>
    <property name="text">
     <string>Увеличить</string>
    </property>
   </action>
   <action name="ZoomOutAction">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/new/prefix1/zoomOut.png</normaloff>:/new/prefix1/zoomOut.png</iconset>
+   </property>
    <property name="text">
     <string>Уменьшить</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="Res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>ExitAction</sender>
@@ -83,8 +101,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>289</x>
-     <y>177</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>289</x>

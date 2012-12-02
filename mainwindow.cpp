@@ -5,6 +5,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    this->labeledImage = NULL;
+    this->scrollArea = NULL;
+    this->currentImage = NULL;
     ui->setupUi(this);
 }
 
