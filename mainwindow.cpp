@@ -19,14 +19,25 @@ void MainWindow::on_OpenAction_triggered()
                                          tr("Open File"), QDir::currentPath());
 
     if (!fileName.isEmpty()) {
-        QImage image(fileName);
-        if (!image.isNull()){
-            QScrollArea* area = new QScrollArea(ui->tabWidget);
-            QLabel* label = new QLabel(area);
-            label->setPixmap(QPixmap::fromImage(image));
-            area->setWidget(label);
-            ui->tabWidget->addTab(area, fileName);
+            currentImage = new QImage(fileName);
+            scrollArea = new QScrollArea(this);
+            labeledImage = new QLabel(scrollArea);
+            labeledImage->setPixmap(QPixmap::fromImage(*currentImage));
+            labeledImage->setScaledContents(true);
+            scrollArea->setWidget(labeledImage);
+            this->setCentralWidget(scrollArea);
         }
-    }
 
+}
+
+void MainWindow::on_ZoomInAction_triggered()
+{
+    if (labeledImage)
+        labeledImage->resize(labeledImage->size() * 1.25);
+}
+
+void MainWindow::on_ZoomOutAction_triggered()
+{
+    if (labeledImage)
+        labeledImage->resize(labeledImage->size() / 1.25);
 }

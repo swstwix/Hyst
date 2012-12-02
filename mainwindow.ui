@@ -14,11 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QTabWidget" name="tabWidget"/>
-    </item>
-   </layout>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -34,8 +30,18 @@
      <string>Изображение</string>
     </property>
     <addaction name="OpenAction"/>
+    <addaction name="separator"/>
+    <addaction name="ExitAction"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Масштаб</string>
+    </property>
+    <addaction name="ZoomInAction"/>
+    <addaction name="ZoomOutAction"/>
    </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -51,8 +57,40 @@
     <string>Открыть</string>
    </property>
   </action>
+  <action name="ExitAction">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="ZoomInAction">
+   <property name="text">
+    <string>Увеличить</string>
+   </property>
+  </action>
+  <action name="ZoomOutAction">
+   <property name="text">
+    <string>Уменьшить</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>ExitAction</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>289</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
