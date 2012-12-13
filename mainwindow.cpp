@@ -44,3 +44,68 @@ void MainWindow::on_ZoomOutAction_triggered()
     if (labeledImage)
         labeledImage->resize(labeledImage->size() / 1.25);
 }
+
+bool MainWindow::IsGrayScalled(){
+    if (currentImage == NULL)
+        return false;
+    for (int i = 0; i < currentImage->width(); i++)
+        for (int j = 0; j < currentImage->height(); j++)
+        {
+            QColor color(currentImage->pixel(i, j));
+            int r = color.red();
+            int g = color.green();
+            int b = color.blue();
+            if ((r != g) || (r != b))
+                return false;
+        }
+    return true;
+}
+
+void MainWindow::on_BuildHystoramAction_triggered()
+{
+    if (currentImage != NULL && IsGrayScalled())
+    {
+        int *a = new int[256];
+        for (int i = 0; i < 256; i++)
+            a[i] = 0;
+        for (int i = 0; i < currentImage->width(); i++)
+            for (int j = 0; j < currentImage->height(); j++)
+            {
+                QColor color(currentImage->pixel(i, j));
+                a[color.green()]++;
+            }
+        HystogramView* view = new HystogramView(a, this);
+        view->show();
+    }
+    else
+    {
+        QMessageBox messageBox(this);
+        messageBox.setText("Not grayed .. !");
+        messageBox.exec();
+    }
+}
+
+void MainWindow::on_NormalizeHystAction_triggered()
+{
+    if (currentImage != NULL && IsGrayScalled())
+    {
+        int *a = new int[256];
+        for (int i = 0; i < 256; i++)
+            a[i] = 0;
+        for (int i = 0; i < currentImage->width(); i++)
+            for (int j = 0; j < currentImage->height(); j++)
+            {
+                QColor color(currentImage->pixel(i, j));
+                a[color.green()]++;
+            }
+
+        HystogramView* view = new HystogramView(a, this);
+        view->show();
+    }
+    else
+    {
+        QMessageBox messageBox(this);
+        messageBox.setText("Not grayed .. !");
+        messageBox.exec();
+    }
+}

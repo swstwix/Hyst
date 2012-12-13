@@ -11,11 +11,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    hystogramview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    hystogramview.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    hystogramview.ui
 
 RESOURCES += \
     Res.qrc

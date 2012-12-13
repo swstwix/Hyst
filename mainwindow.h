@@ -9,6 +9,10 @@
 #include <QImage>
 #include <QLabel>
 #include <QScrollBar>
+#include <QVector>
+#include <QRgb>
+#include <QColor>
+#include "hystogramview.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,11 +32,14 @@ public:
     
 private:
     Ui::MainWindow *ui;
+    bool IsGrayScalled();
 
 private slots:
     void on_OpenAction_triggered();
     void on_ZoomInAction_triggered();
     void on_ZoomOutAction_triggered();
+    void on_BuildHystoramAction_triggered();
+    void on_NormalizeHystAction_triggered();
 };
 
 #endif // MAINWINDOW_H

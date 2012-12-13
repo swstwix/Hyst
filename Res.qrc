@@ -3,5 +3,6 @@
         <file>zoomIn.png</file>
         <file>zoomOut.png</file>
         <file>open.png</file>
+        <file>normalize.png</file>
     </qresource>
 </RCC>
