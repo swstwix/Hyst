@@ -4,5 +4,6 @@
         <file>zoomOut.png</file>
         <file>open.png</file>
         <file>normalize.png</file>
+        <file>hyst.png</file>
     </qresource>
 </RCC>

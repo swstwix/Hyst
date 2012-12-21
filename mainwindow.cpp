@@ -85,27 +85,73 @@ void MainWindow::on_BuildHystoramAction_triggered()
     }
 }
 
+int get_random(int a, int b) {
+    return qrand() % ((b + 1) - a) + a;
+}
+
 void MainWindow::on_NormalizeHystAction_triggered()
 {
-    if (currentImage != NULL && IsGrayScalled())
-    {
-        int *a = new int[256];
-        for (int i = 0; i < 256; i++)
-            a[i] = 0;
-        for (int i = 0; i < currentImage->width(); i++)
-            for (int j = 0; j < currentImage->height(); j++)
-            {
-                QColor color(currentImage->pixel(i, j));
-                a[color.green()]++;
-            }
+    int *h = new int[256];
+    double h_avg = 0;
+    for (int i = 0; i < 256; i++)
+        h[i] = 0;
+    for (int i = 0; i < currentImage->width(); i++)
+        for (int j = 0; j < currentImage->height(); j++)
+        {
+            QColor color(currentImage->pixel(i, j));
+            h[color.green()]++;
+            h_avg += color.green();
+        }
 
-        HystogramView* view = new HystogramView(a, this);
-        view->show();
+    int z = 0, h_int = 0;
+    h_avg /= currentImage->width()*currentImage->height();
+    int *left = new int[255], *right = new int[255], *new_h = new int[255];
+    for (int j = 0; j < 255; j++) {
+        left[j] = z;
+        h_int += h[j];
+        while(h_int > h_avg){
+            h_int -= h_avg;
+            z++;
+        }
+        right[j] = z;
+        new_h[j] = (right[j] + left[j])/2;
     }
-    else
-    {
-        QMessageBox messageBox(this);
-        messageBox.setText("Not grayed .. !");
-        messageBox.exec();
-    }
+
+    for (int i = 0; i < currentImage->width(); i++)
+        for(int j = 0; j < currentImage->height(); j++){
+            QColor color(currentImage->pixel(i,j));
+            int c = color.green();
+            {
+                int r = get_random(0, new_h[j]);
+                int new_br = new_h[c];
+                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
+            }
+        }
+//    for (int i = 0; i < currentImage->width(); i++)
+//        for(int j = 0; j < currentImage->height(); j++){
+//            QColor color(currentImage->pixel(i,j));
+//            int c = color.green();
+//            if (left[c] == right[c])
+//                currentImage->setPixel(i, j, qRgb(left[c],left[c],left[c]));
+//            else
+//            {
+//                int r = get_random(0, new_h[j]);
+//                int new_br = left[c] + r;
+//                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
+//            }
+//        }
+//    for (int i = 0; i < currentImage->width(); i++)
+//        for(int j = 0; j < currentImage->height(); j++){
+//            QColor color(currentImage->pixel(i,j));
+//            int c = color.green();
+//            {
+//                int r = get_random(0, new_h[j]);
+//                int new_br = left[c]+r;
+//                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
+//            }
+//        }
+    labeledImage = new QLabel(scrollArea);
+    labeledImage->setPixmap(QPixmap::fromImage(*currentImage));
+    labeledImage->setScaledContents(true);
+    scrollArea->setWidget(labeledImage);
 }
