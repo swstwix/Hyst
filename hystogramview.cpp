@@ -28,17 +28,6 @@ void HystogramView::paintEvent(QPaintEvent *event)
     hAvg = hAvg / 256;
     painter.drawText(10,10,"hAvg = " + QString::number(hAvg));
 
-    for (int i = 0; i < 255; i++){
-        left[i] = z[i];
-        hInt += a[i];
-        while (hInt > hAvg){
-            hInt -= hAvg;
-            z[i]++;
-        }
-        right[i] = z[i];
-        neww[i] = (left[i] + right[i]) / 2;
-    }
-
     painter.setPen(QPen(Qt::gray));
     for (int i = 0; i < 256; i++)
         if (a[i] > max)
@@ -46,13 +35,6 @@ void HystogramView::paintEvent(QPaintEvent *event)
     for (int i = 0; i < 256; i++)
         painter.drawLine(i+20,this->height()-20,i+20,this->height() - 0.8*a[i]*this->height()/max - 20);
 
-    int max2 = neww[0];
-    for (int i = 0; i < 256; i++)
-        max2 = max2 > neww[i] ? max2 : neww[i];
-
-    /*painter.setPen(QPen(Qt::black));
-    for (int i = 0; i < 255; i++)
-        painter.drawLine(i+20,this->height() - 0.8*neww[i]*this->height()/max2 - 20, i+1+20,this->height() - 0.8*neww[i+1]*this->height()/max - 20);*/
     painter.end();
 }
 

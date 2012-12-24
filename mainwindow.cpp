@@ -86,13 +86,14 @@ void MainWindow::on_BuildHystoramAction_triggered()
 }
 
 int get_random(int a, int b) {
+    if (a > b)
+        return get_random(b, a);
     return qrand() % ((b + 1) - a) + a;
 }
 
 void MainWindow::on_NormalizeHystAction_triggered()
 {
     int *h = new int[256];
-    double h_avg = 0;
     for (int i = 0; i < 256; i++)
         h[i] = 0;
     for (int i = 0; i < currentImage->width(); i++)
@@ -100,56 +101,73 @@ void MainWindow::on_NormalizeHystAction_triggered()
         {
             QColor color(currentImage->pixel(i, j));
             h[color.green()]++;
-            h_avg += color.green();
         }
-
-    int z = 0, h_int = 0;
-    h_avg /= currentImage->width()*currentImage->height();
-    int *left = new int[255], *right = new int[255], *new_h = new int[255];
-    for (int j = 0; j < 255; j++) {
-        left[j] = z;
-        h_int += h[j];
-        while(h_int > h_avg){
-            h_int -= h_avg;
-            z++;
-        }
-        right[j] = z;
-        new_h[j] = (right[j] + left[j])/2;
+    int* h_new = new int[256];
+    int m = currentImage->width();
+    int n = currentImage->height();
+    int cfg_min = 0;
+    while (h[cfg_min] == 0)
+        cfg_min++;
+    cfg_min = h[cfg_min];
+    for (int i = 0; i < 256; i++)
+    {
+        int sum = 0;
+        for (int j = 0; j < i; j++)
+            sum += h[j];
+        h_new[i] = 255 * sum / (m*n);
     }
-
-    for (int i = 0; i < currentImage->width(); i++)
-        for(int j = 0; j < currentImage->height(); j++){
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++){
             QColor color(currentImage->pixel(i,j));
             int c = color.green();
-            {
-                int r = get_random(0, new_h[j]);
-                int new_br = new_h[c];
-                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
-            }
+            int new_c = h_new[c];
+            currentImage->setPixel(i, j, qRgb(new_c,new_c,new_c));
         }
+//    int *left = new int[255], *right = new int[255], *new_h = new int[255];
+//    for (int j = 0; j < 255; j++) {
+//        left[j] = z;
+//        h_int += h[j];
+//        while(h_int > h_avg){
+//            h_int -= h_avg;
+//            z++;
+//        }
+//        right[j] = z;
+//        new_h[j] = (right[j] + left[j])/2;
+//    }
+
 //    for (int i = 0; i < currentImage->width(); i++)
 //        for(int j = 0; j < currentImage->height(); j++){
 //            QColor color(currentImage->pixel(i,j));
 //            int c = color.green();
-//            if (left[c] == right[c])
-//                currentImage->setPixel(i, j, qRgb(left[c],left[c],left[c]));
-//            else
 //            {
 //                int r = get_random(0, new_h[j]);
-//                int new_br = left[c] + r;
+//                int new_br = new_h[c];
 //                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
 //            }
 //        }
-//    for (int i = 0; i < currentImage->width(); i++)
-//        for(int j = 0; j < currentImage->height(); j++){
-//            QColor color(currentImage->pixel(i,j));
-//            int c = color.green();
-//            {
-//                int r = get_random(0, new_h[j]);
-//                int new_br = left[c]+r;
-//                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
-//            }
-//        }
+////    for (int i = 0; i < currentImage->width(); i++)
+////        for(int j = 0; j < currentImage->height(); j++){
+////            QColor color(currentImage->pixel(i,j));
+////            int c = color.green();
+////            if (left[c] == right[c])
+////                currentImage->setPixel(i, j, qRgb(left[c],left[c],left[c]));
+////            else
+////            {
+////                int r = get_random(0, new_h[j]);
+////                int new_br = left[c] + r;
+////                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
+////            }
+////        }
+////    for (int i = 0; i < currentImage->width(); i++)
+////        for(int j = 0; j < currentImage->height(); j++){
+////            QColor color(currentImage->pixel(i,j));
+////            int c = color.green();
+////            {
+////                int r = get_random(0, new_h[j]);
+////                int new_br = left[c]+r;
+////                currentImage->setPixel(i, j, qRgb(new_br,new_br,new_br));
+////            }
+////        }
     labeledImage = new QLabel(scrollArea);
     labeledImage->setPixmap(QPixmap::fromImage(*currentImage));
     labeledImage->setScaledContents(true);
